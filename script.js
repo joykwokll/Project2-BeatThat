@@ -92,5 +92,23 @@ let main = function (input) {
       return outputMessage;
     }
   }
+  if (gameState == gameStateCompareScores) {
+    console.log('control flow: compare scores');
+
+    outputMessage = `Player 1 score: ${allPlayerScore[0]}, Player 2 score: ${allPlayerScore[1]}`;
+
+    if (allPlayerScore[0] > allPlayerScore[1]) {
+      outputMessage = `${outputMessage} Player 1 wins!`
+    }
+
+    if (allPlayerScore[0] < allPlayerScore[1]) {
+      outputMessage = `${outputMessage} Player 2 wins!`
+    }
+
+    if (allPlayerScore[0] == allPlayerScore[1]) {
+      outputMessage = `${outputMessage} Its a tie!`
+    }
+    return outputMessage
+  }
 
 };
