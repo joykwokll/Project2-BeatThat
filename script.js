@@ -10,6 +10,7 @@
 //Global Varibles
 const gameStateDiceRoll = "gameStateDiceRoll";
 const gameStateChooseDiceOrder = "gameStateChooseDiceOrder";
+const gameStateCompareScores = "gameStateCompareScores"
 let gameState = gameStateDiceRoll;
 
 
@@ -36,7 +37,9 @@ let rollDiceForPlayer = function () {
     counter = counter + 1
   }
   console.log("rollDiceForPlayer changes, playerRolls:", currentPlayerRolls);
-  return `Welcome Player ${currentPlayer}. You rolled ${currentPlayerRolls[0]} for Dice 1 and ${currentPlayerRolls[1]} for Dice 2. Choose the order of the dice.`
+  return `Welcome Player ${currentPlayer}. 
+  You rolled ${currentPlayerRolls[0]} for Dice 1 and 
+  ${currentPlayerRolls[1]} for Dice 2. Choose the order of the dice.`
 };
 
 let getPlayerScore = function (playerInput) {
@@ -45,15 +48,14 @@ let getPlayerScore = function (playerInput) {
     return `Error! Please only input 1 or 2 to choose which dice to use as the first digit.
     You rolled ${currentPlayerRolls[0]} for Dice 1 and ${currentPlayerRolls[1]} for Dice 2.`
   }
-  else if (playerInput == 1) {
-    let playerScore = Number(String(currentPlayerRolls[0] + String(currentPlayerRolls[1])));
-    
+  if (playerInput == 1) {
+    playerScore = Number(String(currentPlayerRolls[0] + String(currentPlayerRolls[1])));
+
   }
   if (playerInput == 2) {
-    let playerScore = Number(String(currentPlayerRolls[1] + String(currentPlayerRolls[0])));
-    
-  }
+    playerScore = Number(String(currentPlayerRolls[1] + String(currentPlayerRolls[0])));
 
+  }
   // store player score in array
   allPlayerScore.push(playerScore);
 
@@ -73,20 +75,22 @@ let main = function (input) {
     console.log("gameStateDiceRoll")
     outputMessage = rollDiceForPlayer();
     gameState = gameStateChooseDiceOrder;
+    return outputMessage;
   }
   else if (gameState == gameStateChooseDiceOrder) {
     outputMessage = getPlayerScore(input);
 
-    if (currentPlayer == 1) {
+    if (currentPlayer == 1 && (input == 1 || input == 2)) {
       currentPlayer = 2;
       gameState = gameStateDiceRoll
       return `${outputMessage} It is now player 2's turn!`;
     }
-
-    if (currentPlayer == 2) {
-      
+    else if (currentPlayer == 2 && (input == 1 || input == 2)) {
+      gameState = gameStateCompareScores
+      return `${outputMessage} <br> Press submit to calculate scores`;
+    } else {
+      return outputMessage;
     }
-    return outputMessage;
   }
 
 };
