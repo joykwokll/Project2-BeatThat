@@ -13,7 +13,10 @@ const gameStateChooseDiceOrder = "gameStateChooseDiceOrder";
 let gameState = gameStateDiceRoll;
 
 
-let playerRolls = [];
+let currentPlayerRolls = [];
+
+let currentPlayer = 1;
+let allPlayerScore = [];
 
 //Helper function
 let rollDice = function () {
@@ -29,26 +32,34 @@ let rollDiceForPlayer = function () {
   console.log("Control flow: Start of rollDiceForPlayer()")
   let counter = 0
   while (counter < 2) {
-    playerRolls.push(rollDice());
+    currentPlayerRolls.push(rollDice());
     counter = counter + 1
   }
-  console.log("rollDiceForPlayer changes, playerRolls:", playerRolls);
-  return `Welcome Player 1. You rolled ${playerRolls[0]} for Dice 1 and ${playerRolls[1]} for Dice 2. Choose the order of the dice.`
+  console.log("rollDiceForPlayer changes, playerRolls:", currentPlayerRolls);
+  return `Welcome Player ${currentPlayer}. You rolled ${currentPlayerRolls[0]} for Dice 1 and ${currentPlayerRolls[1]} for Dice 2. Choose the order of the dice.`
 };
 
 let getPlayerScore = function (playerInput) {
+  let playerScore;
   if (playerInput != 1 && playerInput != 2) {
     return `Error! Please only input 1 or 2 to choose which dice to use as the first digit.
-    You rolled ${playerRolls[0]} for Dice 1 and ${playerRolls[1]} for Dice 2.`
+    You rolled ${currentPlayerRolls[0]} for Dice 1 and ${currentPlayerRolls[1]} for Dice 2.`
   }
-  if (playerInput == 1) {
-    let playerScore = Number(String(playerRolls[0] + String(playerRolls[1])));
-    return ` Your chosen value is ${playerScore}`
+  else if (playerInput == 1) {
+    let playerScore = Number(String(currentPlayerRolls[0] + String(currentPlayerRolls[1])));
+    
   }
   if (playerInput == 2) {
-    let playerScore = Number(String(playerRolls[1] + String(playerRolls[0])));
-    return ` Your chosen value is ${playerScore}`
+    let playerScore = Number(String(currentPlayerRolls[1] + String(currentPlayerRolls[0])));
+    
   }
+
+  // store player score in array
+  allPlayerScore.push(playerScore);
+
+  //clear current player rolls array
+  currentPlayerRolls = [];
+  return ` Player ${currentPlayer}, Your chosen value is ${playerScore}`;
 
 }
 
@@ -56,6 +67,7 @@ let main = function (input) {
   // let myOutputValue = rollDice();
   // return myOutputValue
   console.log("check game state", gameState);
+  console.log("check current player ", currentPlayer);
   let outputMessage = "";
   if (gameState == gameStateDiceRoll) {
     console.log("gameStateDiceRoll")
@@ -64,8 +76,17 @@ let main = function (input) {
   }
   else if (gameState == gameStateChooseDiceOrder) {
     outputMessage = getPlayerScore(input);
+
+    if (currentPlayer == 1) {
+      currentPlayer = 2;
+      gameState = gameStateDiceRoll
+      return `${outputMessage} It is now player 2's turn!`;
+    }
+
+    if (currentPlayer == 2) {
+      
+    }
+    return outputMessage;
   }
-  
-  return outputMessage;
 
 };
