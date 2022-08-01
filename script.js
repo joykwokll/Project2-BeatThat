@@ -65,6 +65,13 @@ let getPlayerScore = function (playerInput) {
 
 }
 
+let resetGame = function() {
+  currentPlayer = 1;
+  gameState = gameStateDiceRoll;
+  allPlayerScore = [];
+
+};
+
 let main = function (input) {
   // let myOutputValue = rollDice();
   // return myOutputValue
@@ -108,6 +115,7 @@ let main = function (input) {
     if (allPlayerScore[0] == allPlayerScore[1]) {
       outputMessage = `${outputMessage} Its a tie!`
     }
+    resetGame();
     return outputMessage
   }
 
